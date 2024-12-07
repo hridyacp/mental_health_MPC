@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MPC Hello</title>
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+
+<body>
+  <div class="app">
+    <div class="header">Mental Buddy</div>
+
+    <div class="step-container">
+      <div id="step-1" class="step">
+        <div style="text-align: left;">
+          Welcome to mental buddy, your portal to dicuss mental issues privately
+        </div>
+        <div style="text-align: left; margin-top: 1em;">
+          To start it, one party should click host. This will generate a code that
+          the other party can use to join. It's an end-to-end encrypted P2P
+          connection. There is no server.
+        </div>
+        <div style="text-align: left; margin-top: 1em;">
+          Once connected, both parties will fill up a form to create a mental object state which is matched with other user without disclosing details.
+        </div>
+        <div>
+          <button id="host-btn">Host</button>&nbsp;
+          <button id="join-btn">Join</button>
+        </div>
+      </div>
+
+      <div id="step-2-host" class="step hidden">
+        <p>Joining code:</p>
+        <div id="host-code" class="code-box"></div>
+      </div>
+
+      <div id="step-2-join" class="step hidden">
+        <div>
+          <label for="join-code-input">Enter host code:</label>
+          <input type="text" id="join-code-input">
+        </div>
+        <div id="join-submit-container">
+          <button id="join-submit-btn">Join</button>
+        </div>
+        <div id="join-spinner" class="spinner-container hidden">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <div id="step-3" class="step hidden">
+        <div style="text-align: left; margin-top: 1em;">
+          <label for="interest-input">Little interest or pleasure in doing things:</label>
+          <select id="interest-input">
+            <option value="1">Not At All</option>
+            <option value="2">Several Days</option>
+            <option value="3">Almost Every Day</option>
+          </select>
+        </div>
+        <div style="text-align: left; margin-top: 1em;"> 
+          <label for="depressed-input" style="text-align: left; margin-top: 1em;">Feeling down, depressed, or hopeless:</label>
+          <select id="depressed-input">
+            <option value="1">Not At All</option>
+            <option value="2">Several Days</option>
+            <option value="3">Almost Every Day</option>
+          </select>
+        </div>
+        <div style="text-align: left; margin-top: 1em;">
+          <label for="sleep-input" style="text-align: left; margin-top: 1em;">Trouble falling or staying asleep, or sleeping too much:</label>
+          <select id="sleep-input">
+            <option value="1">Not At All</option>
+            <option value="2">Several Days</option>
+            <option value="3">Almost Every Day</option>
+          </select>
+        </div>
+        <div style="text-align: left; margin-top: 1em;">
+          <label for="energy-input" >Feeling tired or having little energy:</label>
+          <select id="energy-input">
+            <option value="1">Not At All</option>
+            <option value="2">Several Days</option>
+            <option value="3">Almost Every Day</option>
+          </select>
+        </div>
+        <div>
+          <button id="submit-number-btn">Submit</button>
+        </div>
+      </div>
+
+      <div id="step-4" class="step hidden">
+        <p>Calculating...</p>
+        <div class="spinner-container">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <div id="step-5" class="step hidden">
+        <h2><span id="result-value"></span></h2>
+        <h3><span id="chat-value">Use the socket code, in chat app to chat with other party</span></h2>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.ts"></script>
+</body>
+
+</html>

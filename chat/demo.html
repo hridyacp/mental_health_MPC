@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; }
+        #messageInput { width: calc(100% - 50px); }
+    </style>
+</head>
+<body>
+    <h1>Chat App</h1>
+    <div>
+        <input id="roomCode" type="text" placeholder="Enter room code" />
+        <button id="joinBtn">Join Room</button>
+    </div>
+    <div id="chat" hidden>
+        <div id="messages"></div>
+    </div>
+    <div id="messageBox" hidden>
+        <input id="messageInput" type="text" placeholder="Type your message" />
+        <button id="sendBtn">Send</button>
+    </div>
+
+    <script>
+        const roomCodeInput = document.getElementById('roomCode');
+        const joinBtn = document.getElementById('joinBtn');
+        const chatDiv = document.getElementById('chat');
+        const messageBox = document.getElementById('messageBox');
+        const messagesDiv = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        let socket;
+        let roomCode;
+
+        joinBtn.addEventListener('click', () => {
+            roomCode = roomCodeInput.value.trim();
+            if (!roomCode) {
+                alert('Please enter a room code.');
+                return;
+            }
+
+            socket = new WebSocket('ws://localhost:8080');
+
+            socket.addEventListener('open', () => {
+                socket.send(JSON.stringify({ type: 'join', code: roomCode }));
+                chatDiv.hidden = false;
+                messageBox.hidden = false;
+            });
+
+            socket.addEventListener('message', (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'message') {
+                    const msg = document.createElement('div');
+                    msg.textContent = data.text;
+                    messagesDiv.appendChild(msg);
+                    chatDiv.scrollTop = chatDiv.scrollHeight;
+                }
+            });
+
+            socket.addEventListener('close', () => {
+                alert('Disconnected from server.');
+                chatDiv.hidden = true;
+                messageBox.hidden = true;
+            });
+        });
+
+        sendBtn.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            if (message) {
+                socket.send(JSON.stringify({ type: 'message', text: message }));
+                const msg = document.createElement('div');
+                msg.textContent = `You: ${message}`;
+                messagesDiv.appendChild(msg);
+                chatDiv.scrollTop = chatDiv.scrollHeight;
+                messageInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
